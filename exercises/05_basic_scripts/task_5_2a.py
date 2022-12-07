@@ -49,3 +49,40 @@ bin_ip = "00001010000000010000000111000011"
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+
+ip = input('Введите ip адрес и маску сети: ')
+
+ip_template = ''' 
+Network: 
+{0:<8}  {1:<8}  {2:<8}  {3:<8} 
+{0:08b}  {1:08b}  {2:08b}  {3:08b} 
+'''
+
+mask_template = '''
+Mask: 
+/{0:<8}
+{1:<8}  {2:<8}  {3:<8}  {4:<8} 
+{1:08b}  {2:08b}  {3:08b}  {4:08b}
+'''
+oct1 = int(ip.split('.')[0])
+oct2 = int(ip.split('.')[1])
+oct3 = int(ip.split('.')[2])
+oct4 = int((ip.split('.')[3]).split('/')[0])
+mask = int((ip.split('.')[3]).split('/')[1])
+
+adr_host = 32 - mask
+mask_bin = "1" * mask + "0" * adr_host
+bin_ip = '{:08b}{:08b}{:08b}{:08b}'.format(oct1,oct2,oct3,oct4)
+adr_seti = bin_ip[:mask] + adr_host * '0'
+
+o1 = int(adr_seti[0:8],2)
+o2 = int(adr_seti[8:16],2)
+o3 = int(adr_seti[16:24],2)
+o4 = int(adr_seti[24:32],2)
+
+mask_oct1 = int(mask_bin[0:8],2)
+mask_oct2 = int(mask_bin[8:16],2)
+mask_oct3 = int(mask_bin[16:24],2)
+mask_oct4 = int(mask_bin[24:32],2)
+
+print(ip_template.format(o1, o2, o3, o4), mask_template.format(mask,mask_oct1, mask_oct2, mask_oct3, mask_oct4))

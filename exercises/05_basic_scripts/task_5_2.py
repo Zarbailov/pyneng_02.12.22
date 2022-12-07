@@ -30,3 +30,26 @@ Out[1]: '11111111111111111111111111110000'
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+
+prefix = input("Введите IP-адрес и маску в формате: 10.1.1.0/24: ")
+mask = int(prefix.split("/")[-1])
+ip = prefix.split("/")[0].split(".")
+oct1, oct2, oct3, oct4 = ip
+zeros = 32 - mask
+mask_bin = "1" * mask + "0" * zeros
+mask_oct1 = int(mask_bin[0:8],2)
+mask_oct2 = int(mask_bin[8:16],2)
+mask_oct3 = int(mask_bin[16:24],2)
+mask_oct4 = int(mask_bin[24:32],2)
+
+print(f"""
+Network:
+{int(oct1):<8} {int(oct2):<8} {int(oct3):<8} {int(oct4):<8}
+{int(oct1):08b} {int(oct2):<08b} {int(oct3):<08b} {int(oct4):<08b}
+
+Mask:
+/{mask}
+{mask_oct1:<8} {mask_oct2:<8} {mask_oct3:<8} {mask_oct4:<8}
+{mask_oct1:08b} {mask_oct2:08b} {mask_oct3:08b} {mask_oct4:08b}
+    """ 
+)
