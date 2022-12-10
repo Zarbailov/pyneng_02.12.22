@@ -40,3 +40,21 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+result_dict = []
+with open ('CAM_table.txt') as f:
+    for line in f:
+        if 'DYNAMIC' in line:
+            line = line.split()
+            result_dict.append(line)
+
+
+result_dict_sorted = []
+for l in result_dict:
+    l[0] = int(l[0])
+    result_dict_sorted.append(l)
+for l in sorted(result_dict_sorted):
+    vlan,mac,state,intf = l
+    print("{:>4} {:>17} {:>8}".format(vlan,mac,intf))
+    
+    
+

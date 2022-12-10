@@ -17,3 +17,24 @@ Enter VLAN number: 10
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+
+from pprint import pprint
+
+result_dict = []
+with open ('CAM_table.txt') as f:
+    for line in f:
+        if 'DYNAMIC' in line:
+            line = line.split()
+            result_dict.append(line)
+
+
+
+number_vlan = int(input("Введите номер влана: "))
+
+result_dict_sorted = []
+for l in result_dict:
+    l[0] = int(l[0])
+    if number_vlan == l[0]:
+        result_dict_sorted.append(l)
+        vlan,mac,state,intf = l
+        print("{:>4} {:>17} {:>8}".format(vlan,mac,intf))
