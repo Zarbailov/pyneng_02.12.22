@@ -64,3 +64,17 @@ def ignore_command(command, ignore):
         if word in command:
             ignore_status = True
     return ignore_status
+
+
+def convert_config_to_dict(config_filename):
+    result_dict = {}
+    with open(config_filename) as f:
+        for command in f:
+            command = command.rstrip()
+            if command and not command.startswith("!" ) and not ignore_command(command, ignore):
+                if not command.startswith(" "):
+                    upper_command_key = command
+                    result_dict[upper_command_key] = []
+                else: 
+                    result_dict[upper_command_key].append(command.strip())
+        return result_dict
