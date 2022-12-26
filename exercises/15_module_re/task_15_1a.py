@@ -24,3 +24,37 @@
 а не ввод пользователя.
 
 """
+import re
+#variant 1
+def get_ip_from_cfg(filename):
+    with open(filename) as f:
+        result = {}
+        for line in f:
+            if line.startswith("interface"):
+                intf = re.search(r"interface (?P<intf>\S+)", line).group("intf")
+            elif line.startswith(" ip address"):
+                match = re.search("ip address (?P<ip>[\d.]+) (?P<mask>[\d.]+)", line)
+                result[intf] = match.groups()
+    return result
+                
+if __name__ == "__main__":
+    print(get_ip_from_cfg("E:/development/pyneng/15/config_r1.txt"))
+
+#variant 2
+def get_ip_from_cfg(filename):
+    regex = (r"interface (?P<intf>\S+)"
+        r"|ip address (?P<ip>[\d.]+) (?P<mask>[\d.]+)"
+    )
+    with open(filename) as f:
+        result = {}
+        for line in f:
+            match = re.search(regex, line)
+            if match:
+                if match.lastgroup == "intf":
+                    intf = match.group(match.lastgroup)
+                else:
+                    result[intf] = match.group("ip", "mask")
+        return result
+
+if __name__ == "__main__":
+    print(get_ip_from_cfg("E:/development/pyneng/15/config_r1.txt"))
