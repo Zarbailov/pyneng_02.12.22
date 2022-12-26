@@ -28,3 +28,30 @@ IP-адреса, диапазоны адресов и так далее, так 
 а не ввод пользователя.
 
 """
+
+
+from pprint import pprint
+
+import re
+
+
+def get_ip_from_cfg(filename):
+    regex = (
+        r"interface (?P<intf>\S+)"
+        r"|ip address (?P<ip>[\d.]+) (?P<mask>[\d.]+)"
+    )
+    with open(filename) as f:
+        result = {}
+        for line in f:
+            match = re.search(regex, line)
+            if match:
+                if match.lastgroup == "intf":
+                    ip_list = []
+                    intf = match.group(match.lastgroup)
+                else:
+                    ip_list.append(match.group("ip", "mask"))
+                    result[intf] = ip_list
+        return result
+
+if __name__ == "__main__":
+    pprint(get_ip_from_cfg("E:/development/pyneng/15/config_r2.txt"))
