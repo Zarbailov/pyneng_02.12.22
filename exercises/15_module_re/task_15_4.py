@@ -24,3 +24,23 @@ interface Loopback0
 
 Проверить работу функции на примере файла config_r1.txt.
 """
+import re
+
+def get_ints_without_description(filename):
+    with open(filename) as f:
+        result = []
+        regex = (r'^interface (?P<intf>\S+)'
+                r'|(?P<descr>^ description)')
+        for line in f:
+            match = re.search(regex,line)
+            if match:
+                if match.lastgroup == 'intf':
+                    intf = match.group('intf')
+                    result.append(intf)
+                else:
+                    result.remove(intf)
+        return result
+
+
+if __name__ == "__main__":
+    pprint(get_ints_without_description("E:/development/pyneng/15/config_r1.txt"))
