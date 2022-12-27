@@ -32,3 +32,18 @@ object network LOCAL_10.1.9.5
 
 Во всех правилах для ASA интерфейсы будут одинаковыми (inside,outside).
 """
+
+import re
+
+
+def convert_ios_nat_to_asa(src_file, dst_file):
+    regex = r"\D+ ([\d.]+) (\d+) \S.+ (\d+)"
+    with open(src_file) as src:
+        with open(dst_file, "w") as dst:
+            result = re.findall(regex, src.read())
+            for ip, port_src, port_dst in result:
+                dst.write(
+                    f"object network LOCAL_{ip}\n"
+                    f" host {ip}\n"
+                    f" nat (inside,outside) static interface service tcp {port_src} {port_dst}\n"
+                ) 
