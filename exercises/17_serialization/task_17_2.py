@@ -43,6 +43,7 @@
 Кроме того, создан список заголовков (headers), который должен быть записан в CSV.
 """
 
+
 import glob
 from pprint import pprint
 import re
