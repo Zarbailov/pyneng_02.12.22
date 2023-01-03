@@ -48,5 +48,31 @@ Out[16]: 'config term\nEnter configuration commands, one per line.  End with CNT
 
 """
 
+import yaml
+from pprint import pprint
+from task_18_1 import send_show_command
+from task_18_2 import send_config_commands
+
+r1 = {'device_type': 'cisco_ios',
+      'host': '192.168.100.1',
+      'username': 'cisco',
+      'password': 'cisco',
+      'secret': 'cisco',
+      'timeout': 10}
+
 commands = ["logging 10.255.255.1", "logging buffered 20010", "no logging console"]
 command = "sh ip int br"
+
+
+def send_commands(device, *, show=None, config=None):
+    if show and config:
+        raise ValueError("Можно передавать только один из аргументов show/config")
+    if show:
+        output = send_show_command(device, show)
+    if config:
+        output = send_config_commands(device, config)
+    return output
+
+if __name__ == "__main__":
+    print(send_commands(r1, show=command))
+    print(send_commands(r1, config=commands))
